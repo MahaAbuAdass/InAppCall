@@ -1,15 +1,15 @@
 package com.example.inappcall
 
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.example.inappcall.databinding.ActivityMainBinding
-import com.example.inappcall.databinding.ActivityVideoCallBinding
 import com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton
 import com.zegocloud.uikit.service.defines.ZegoUIKitUser
 
@@ -21,31 +21,29 @@ class VideoCallActivity : AppCompatActivity() {
     private lateinit var audioCallBtn: ZegoSendCallInvitationButton
     private lateinit var buttonLayout: LinearLayout
 
-    private lateinit var binding: ActivityVideoCallBinding
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityVideoCallBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_video_call)
 
-        receiverUserId = binding.receiverUserIdTextField
-        textView = binding.userIdTextView
-        videoCallBtn = binding.videoCallBtn
-        audioCallBtn = binding.audioCallBtn
-        buttonLayout = binding.buttonsLayout
+        receiverUserId = findViewById(R.id.receiver_user_id_text_field)
+        textView = findViewById(R.id.user_id_text_view)
+        videoCallBtn = findViewById(R.id.video_call_btn)
+        audioCallBtn = findViewById(R.id.audio_call_btn)
+        buttonLayout = findViewById(R.id.buttons_layout)
 
         val userId = intent.getStringExtra("userID")
         textView.text = "Hi $userId!"
 
         receiverUserId.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                TODO("Not yet implemented")
+                // No action needed
+
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
                 val _receiverId = receiverUserId.text.toString()
+                Log.v("reciever id" , _receiverId)
                 if (_receiverId.isNotEmpty()) {
 
                     buttonLayout.visibility = View.VISIBLE
@@ -57,24 +55,22 @@ class VideoCallActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                TODO("Not yet implemented")
+                // No action needed
+
             }
 
         })
-
     }
-
-
 
     private fun startVideoCall(receiverId: String) {
         videoCallBtn.setIsVideoCall(true)
-        videoCallBtn.resourceID = "zego_uikit_call"
+        videoCallBtn.resourceID = "zego_call"
         videoCallBtn.setInvitees(listOf(ZegoUIKitUser(receiverId)))
     }
 
     private fun startAudioCall(receiverId: String) {
         audioCallBtn.setIsVideoCall(false)
-        audioCallBtn.resourceID = "zego_uikit_call"
+        audioCallBtn.resourceID = "zego_call"
         audioCallBtn.setInvitees(listOf(ZegoUIKitUser(receiverId)))
     }
 }
